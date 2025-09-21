@@ -48,7 +48,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: '1',
         email,
         name: email.split('@')[0],
-        role: email.includes('admin') ? 'admin' : 'buyer'
+        role: email.includes('admin') ? 'admin' : 
+              email.includes('seller') ? 'seller' : 'buyer'
       };
       
       setUser(mockUser);

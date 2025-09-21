@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Star, ShoppingBag, Truck, Shield, Headphones } from 'lucide-react';
 import ProductCard from '../components/products/ProductCard';
 import { mockProducts } from '../data/mockData';
+import CategoryShowcase from '../components/common/CategoryShowcase';
+import Newsletter from '../components/common/Newsletter';
 
 const HomePage: React.FC = () => {
   const featuredProducts = mockProducts.slice(0, 8);
@@ -83,36 +85,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Shop by Category</h2>
-            <p className="text-gray-600">Explore our wide range of product categories</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {categories.map((category, index) => (
-              <Link
-                key={index}
-                to={`/products?category=${encodeURIComponent(category.name)}`}
-                className="group text-center"
-              >
-                <div className="relative overflow-hidden rounded-lg mb-3">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300"></div>
-                </div>
-                <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                  {category.name}
-                </h3>
-                <p className="text-sm text-gray-500">{category.count} items</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CategoryShowcase />
 
       {/* Featured Products */}
       <section className="py-16 bg-white">
@@ -139,25 +112,9 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-gray-900 text-white">
+      <section className="py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Stay in the Loop</h2>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Subscribe to our newsletter and be the first to know about new arrivals, exclusive deals, and special offers.
-          </p>
-          <form className="max-w-md mx-auto flex">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-l-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-r-lg font-semibold transition-colors"
-            >
-              Subscribe
-            </button>
-          </form>
+          <Newsletter />
         </div>
       </section>
     </div>

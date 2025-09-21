@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu, X, Heart } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
+import { useWishlist } from '../../contexts/WishlistContext';
 import AuthModal from '../auth/AuthModal';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { itemCount } = useCart();
+  const { items: wishlistItems } = useWishlist();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,6 +61,16 @@ const Header: React.FC = () => {
                 Products
               </Link>
               
+              {/* Wishlist */}
+              <Link to="/wishlist" className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
+                <Heart className="h-6 w-6" />
+                {wishlistItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {wishlistItems.length}
+                  </span>
+                )}
+              </Link>
+
               {/* Cart */}
               <Link to="/cart" className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
                 <ShoppingCart className="h-6 w-6" />
@@ -86,6 +98,11 @@ const Header: React.FC = () => {
                     {user.role === 'admin' && (
                       <Link to="/admin" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                         Admin
+                      </Link>
+                    )}
+                    {(user.role === 'seller' || user.role === 'admin') && (
+                      <Link to="/seller" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        Seller Dashboard
                       </Link>
                     )}
                     <button
@@ -155,6 +172,15 @@ const Header: React.FC = () => {
                   Cart {itemCount > 0 && `(${itemCount})`}
                 </Link>
                 
+                <Link
+                  to="/wishlist"
+                  className="flex items-center py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Heart className="h-5 w-5 mr-2" />
+                  Wishlist {wishlistItems.length > 0 && `(${wishlistItems.length})`}
+                </Link>
+
                 {user ? (
                   <>
                     <Link
@@ -171,6 +197,15 @@ const Header: React.FC = () => {
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Admin
+                      </Link>
+                    )}
+                    {(user.role === 'seller' || user.role === 'admin') && (
+                      <Link
+                        to="/seller"
+                        className="block py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Seller Dashboard
                       </Link>
                     )}
                     <button

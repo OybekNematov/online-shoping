@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { CreditCard, MapPin, Truck, Lock } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import StripeCheckout from '../components/payments/StripeCheckout';
+import { useToast } from '../hooks/useToast';
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { items, total, clearCart } = useCart();
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [step, setStep] = useState(1);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
@@ -44,6 +47,20 @@ const CheckoutPage: React.FC = () => {
     }
   };
 
+  const handlePaymentSuccess = (paymentId: string) => {
+    // Update order with payment ID and mark as paid
+    clearCart();
+    setOrderPlaced(true);
+    showToast('success', 'Order placed successfully!');
+    
+    setTimeout(() => {
+      navigate('/profile');
+    }, 3000);
+  };
+
+  const handlePaymentError = (error: string) => {
+    showToast('error', error);
+  };
   if (items.length === 0 && !orderPlaced) {
     navigate('/cart');
     return null;
@@ -208,68 +225,11 @@ const CheckoutPage: React.FC = () => {
 
             {step === 2 && (
               <div className="bg-white rounded-lg shadow-sm border p-6">
-                <div className="flex items-center mb-6">
-                  <CreditCard className="h-6 w-6 text-blue-600 mr-2" />
-                  <h2 className="text-xl font-semibold">Payment Information</h2>
-                </div>
-                
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Card Number *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="1234 5678 9012 3456"
-                      value={paymentInfo.cardNumber}
-                      onChange={(e) => setPaymentInfo({ ...paymentInfo, cardNumber: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Name on Card *
-                    </label>
-                    <input
-                      type="text"
-                      value={paymentInfo.nameOnCard}
-                      onChange={(e) => setPaymentInfo({ ...paymentInfo, nameOnCard: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      required
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Expiry Date *
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="MM/YY"
-                        value={paymentInfo.expiryDate}
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, expiryDate: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        CVV *
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="123"
-                        value={paymentInfo.cvv}
-                        onChange={(e) => setPaymentInfo({ ...paymentInfo, cvv: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        required
-                      />
-                    </div>
-                  </div>
-                </form>
+                <StripeCheckout
+                  amount={total * 1.08}
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                />
                 
                 <div className="flex space-x-4 mt-6">
                   <button

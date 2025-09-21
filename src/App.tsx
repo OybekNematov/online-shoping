@@ -14,6 +14,8 @@ import CheckoutPage from './pages/CheckoutPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 import WishlistPage from './pages/WishlistPage';
+import SellerDashboard from './pages/SellerDashboard';
+import DealsPage from './pages/DealsPage';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/wishlist" element={<WishlistPage />} />
                     <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/seller" element={<SellerDashboard />} />
+                    <Route path="/deals" element={<DealsPage />} />
                   </Routes>
                 </main>
                 <Footer />

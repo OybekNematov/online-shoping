@@ -52,6 +52,11 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/seller" className="hover:text-blue-400 transition-colors">
+                  Sell on Online Savdo
+                </Link>
+              </li>
+              <li>
                 <Link to="/bestsellers" className="hover:text-blue-400 transition-colors">
                   Best Sellers
                 </Link>
@@ -92,17 +97,17 @@ const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-blue-400" />
-                <span className="text-sm">+998 91 484 84 06</span>
+                <span className="text-sm">+1 (555) 123-4567</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-blue-400" />
-                <span className="text-sm">Nematovoybek544@gmail.com</span>
+                <span className="text-sm">support@onlinesavdo.com</span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="h-4 w-4 text-blue-400 mt-0.5" />
                 <span className="text-sm">
-                  Mirabat Street 12<br />
-                  Oybek District, 13
+                  123 Commerce Street<br />
+                  Business District, NY 10001
                 </span>
               </div>
             </div>
